@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:3232';
+const API_BASE_URL = process.env.API_BASE_URL;
+
 
 function toggleForms() {
     const loginForm = document.getElementById('login-form');
