@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  password    String
+  role        String        @default("user")
+  active      Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  dob         DateTime?
+  fullname    String
+  nationality String?
+  phone       String?
+  name        String?       
+  department  String?
+  position    String?       
+  taskReportsCreated TaskReport[] @relation("TaskReportCreatedBy")
+  taskReportsAssigned TaskReport[] @relation("TaskReportEmployee")
+
+  @@map("users")
+}
+
+model TaskReport {
+  id                 Int      @id @default(autoincrement())
+  employeeId         Int
+  employeeName       String?
+  position           String
+  department         String
+  taskTitle          String
+  taskDescription    String   @db.Text
+  priority           String   @default("medium")
+  status             String   @default("pending")
+  startDate          DateTime
+  dueDate            DateTime
+  estimatedHours     Float
+  actualHours        Float    @default(0)
+  progressPercentage Int      @default(0)
+  notes              String?  @db.Text
+  completedDate      DateTime?
+  createdBy          Int
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  
+  employee  User @relation("TaskReportEmployee", fields: [employeeId], references: [id])
+  creator   User @relation("TaskReportCreatedBy", fields: [createdBy], references: [id])
+
+  @@index([createdBy])
+  @@index([employeeId])
+  @@map("task_reports")
+}
