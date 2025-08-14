@@ -1,5 +1,4 @@
-const API_BASE_URL = process.env.API_BASE_URL;
-
+const API_BASE_URL = window.location.origin;
 
 function toggleForms() {
     const loginForm = document.getElementById('login-form');
