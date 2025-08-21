@@ -199,7 +199,7 @@ class TaskReportModel {
     const where = {};
     if (employeeId) where.employeeId = parseInt(employeeId);
     if (department)
-      where.department = { contains: department, mode: "insensitive" };
+      where.department = { contains: department };
     if (startDate && endDate) {
       where.createdAt = {
         gte: new Date(startDate),
